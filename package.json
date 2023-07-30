@@ -1,0 +1,11 @@
+{
+  "name": "roll-for-fishing",
+  "version": "0.0.1",
+  "description": "a d20 fishing game",
+  "main": "main.js",
+  "type": "module",
+
+  "dependencies": {
+    "node": "^20.5.0"
+  }
+}
