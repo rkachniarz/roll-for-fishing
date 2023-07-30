@@ -3,7 +3,7 @@ import fishNames from "./fishNames.js";
 
 const sizes = ['Tiny', 'Small', 'Regular Size', 'Large', 'Gigantic', 'Humongous']
 
-class Fish {
+export class Fish {
     constructor(){
         this.name = fishNames.names[getRandomNumber(0, fishNames.names.length-1)];
         this.size = sizes[getRandomNumber(0,sizes.length-1)];
@@ -18,6 +18,3 @@ class Fish {
 
 
 }
-
-
-export const fish = new Fish();

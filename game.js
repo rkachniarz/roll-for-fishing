@@ -1,38 +1,50 @@
-import { fish } from "./fish.js";
+import { Fish } from "./fish.js";
 import { player } from "./player.js";
 import { getRandomNumber, roll20 } from "./helpers.js";
 
-let nat20 = false;
+const playerNameElement = document.querySelector('[data-player="Name"]');
+const playerSkillElement = document.querySelector('[data-player="Skill Bonus"]');
+const playerLevelElement = document.querySelector('[data-player="Level"]');
+const playerXPTotalElement = document.querySelector('[data-player="XP Total"]');
 
 function rollForFishing(player) {
-        let dieRoll = roll20();
-        let rollTotal = (dieRoll + player.skill);
+    const dieRoll = roll20();
+    const rollTotal = (dieRoll + player.skill);
+    const text = dieRoll === 20 ? `It's a natural 20! With a total of ${rollTotal}` : `${dieRoll} + ${player.skill} for a total of ${rollTotal}`;
 
-        if (dieRoll == 20) {
-            nat20 = true;
-            return ([`It's a natural 20! With a total of ${rollTotal}`, rollTotal]);
-        }
-        else {
-            return ([`${dieRoll} + ${player.skill} for a total of ${rollTotal}`, rollTotal]);
-        }
-
+    return {
+        text: text,
+        rollTotal: rollTotal,
+        isNat20: dieRoll === 20,
+    }
 }
 
-let roll = rollForFishing(player)[1];
-let rollDescription = rollForFishing(player)[0];
+function buttonFunction(){
+    const fish = new Fish;
+    const { text, rollTotal, isNat20 } = rollForFishing(player);
+    let catchmessage;
 
-console.log("Your fishing bonus is: +",player.skill);
-console.log("Rolling for fishing: ",  rollDescription);
-console.log("You've encountered a", fish.provideDescription(), "- it required a roll of", fish.requiredRoll, "to catch.");
+    if ((rollTotal >= fish.requiredRoll) || isNat20) {
+        catchmessage = `Congratulations, you've caught it! You've earned ${fish.difficulty}xp`
+        player.totalxp += fish.difficulty;
+        updatePlayer();
+    } else {
+        catchmessage = "It got away!";
+    }
 
-if ((roll >= fish.requiredRoll) || nat20===true) {
-    console.log("Congratulations, you've caught it! You've earned", fish.difficulty, "xp")
-    player.totalxp += fish.difficulty
-    } 
-else {console.log("It got away!")};
+    document.querySelector('[data-output]').innerHTML=`
+    You've encountered a ${fish.provideDescription()} - it required a roll of ${fish.requiredRoll} to catch. <br>
+    Your roll:  ${text}<br>
+    ${catchmessage}`;
+};
+   
+function updatePlayer(){
+    playerXPTotalElement.innerHTML=player.totalxp;
+    playerLevelElement.innerHTML=player.getLevel();
+}
 
-
-// export function game(){
-// document.getElementById("output").innerHTML="You've encountered a", fish.provideDescription(), "- it required a roll of", fish.requiredRoll, "to catch.";
-// }
+updatePlayer();
+playerNameElement.innerHTML=player.name;
+playerSkillElement.innerHTML=player.skill;
+document.querySelector('[data-button]').addEventListener("click", buttonFunction);
 
