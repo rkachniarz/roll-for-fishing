@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head> 
+        <title>Roll For Fishing - a d20 fishing game</title>
+         <script type="module" src="./game.js"></script>
+    </head>
+    <body>
+        <div id="Title">
+            <h1>Roll For Fishing</h1>
+            <div class="stat-block">
+                <div>Name: <span data-player="Name"></span></div>
+                <div>Fishing Bonus: <span data-player="Skill Bonus"></span></div>
+                <div>Level: 
+                    <span data-player="Level"></span>
+                    <span>Total XP:</span>
+                    <span data-player="XP Total"></span>
+                </div>
+            </div>
+        <div id="ButtonArea">
+            <button data-button>Let's roll!</button>
+            <p data-output></p>
+        </div>
+        </div>
+    </body>
+</html>

@@ -1,5 +1,5 @@
 export default {
-    "names": [
+    names: [
         "Carp",
         "Albacore",
         "Roach",
