@@ -40,7 +40,7 @@ function buttonFunction(){
         catchmessage = `Congratulations, you've caught it! You've earned ${fish.difficulty}xp`
         player.totalxp += fish.difficulty;
         updatePlayer();
-        player.fishHistory.push(fish);
+        player.fishHistory.push({fish, rollTotal});
         updateFishHistoryButton();
     } else {
         catchmessage = "It got away!";
@@ -69,8 +69,9 @@ function historyButtonListener() {
 
 function showHistory(){
     historyButton.innerText = 'Hide History';
-    const printHistory = player.fishHistory.map((fish) => `<li>${fish.provideDescription()}, roll required: ${fish.requiredRoll}, xp gained: ${fish.difficulty}</li>`).join('');
-    console.log(printHistory);
+    console.log(player.fishHistory)
+    const printHistory = player.fishHistory.map(({fish, rollTotal}) => `<li>${fish.provideDescription()}, roll required: ${fish.requiredRoll}, your roll: ${rollTotal}, xp gained: ${fish.difficulty}</li>`).join('');
+    // console.log(printHistory);
     output.innerHTML = `<ul> ${printHistory} </ul>`;
 
     switchHistory = hideHistory;

@@ -5,7 +5,7 @@ const sizes = [
      chance: 5},
     {name: "Small",
       chance: 20},
-    {name: "Regular Size",
+    {name: "",
      chance: 0},
     {name: "Large",
      chance: 20},
@@ -15,18 +15,18 @@ const sizes = [
      chance: 5}]
 
 export class Fish {
-constructor(location){
+    constructor(location){
 
-    const {name, difficultyMod, subnames } = pickRandom(location);
-    const pickedSubname = subnames[getRandomNumber(0, subnames.length-1)]
-    this.name = `${pickedSubname} ${name}`;
-    const pickedSize = pickRandom(sizes);
-    this.size = pickedSize.name;
-    this.difficulty = (difficultyMod + (sizes.indexOf(pickedSize)));
-    this.requiredRoll = (this.difficulty + roll20());
-}
+        const {name, difficultyMod, subnames } = pickRandom(location);
+        const pickedSubname = subnames[getRandomNumber(0, subnames.length-1)]
+        this.name = `${pickedSubname} ${name}`;
+        const pickedSize = pickRandom(sizes);
+        this.size = pickedSize.name;
+        this.difficulty = (difficultyMod + (sizes.indexOf(pickedSize)));
+        this.requiredRoll = (this.difficulty + roll20());
+    }
 
-provideDescription() {
-    return `${this.size} ${this.name}`
-}
+    provideDescription() {
+        return `${this.size} ${this.name}`
+    }
 }
