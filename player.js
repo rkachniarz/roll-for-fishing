@@ -7,6 +7,7 @@ class Player {
         this.name = name; 
         this.skill = getRandomNumber(0, 5);
         this.totalxp = 0;
+        this.fishHistory = [];
     }
 
     getLevel() {

@@ -1,20 +1,32 @@
-import { getRandomNumber, roll20 } from "./helpers.js";
-import fishNames from "./fishNames.js";
+import { getRandomNumber, roll20, pickRandom } from "./helpers.js";
 
-const sizes = ['Tiny', 'Small', 'Regular Size', 'Large', 'Gigantic', 'Humongous']
+const sizes = [
+    {name: "Tiny",
+     chance: 5},
+    {name: "Small",
+      chance: 20},
+    {name: "Regular Size",
+     chance: 0},
+    {name: "Large",
+     chance: 20},
+    {name: "Gigantic",
+     chance: 15},
+    {name: "Humongous",
+     chance: 5}]
 
 export class Fish {
-    constructor(){
-        this.name = fishNames.names[getRandomNumber(0, fishNames.names.length-1)];
-        this.size = sizes[getRandomNumber(0,sizes.length-1)];
-        this.difficulty = (2*(sizes.indexOf(this.size)));
-        this.requiredRoll = (this.difficulty + roll20());
-    }
-    
-    provideDescription() {
-        return `${this.size} ${this.name}`
-    }
+constructor(location){
 
+    const {name, difficultyMod, subnames } = pickRandom(location);
+    const pickedSubname = subnames[getRandomNumber(0, subnames.length-1)]
+    this.name = `${pickedSubname} ${name}`;
+    const pickedSize = pickRandom(sizes);
+    this.size = pickedSize.name;
+    this.difficulty = (difficultyMod + (sizes.indexOf(pickedSize)));
+    this.requiredRoll = (this.difficulty + roll20());
+}
 
-
+provideDescription() {
+    return `${this.size} ${this.name}`
+}
 }
