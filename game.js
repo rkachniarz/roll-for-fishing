@@ -69,9 +69,9 @@ function historyButtonListener() {
 
 function showHistory(){
     historyButton.innerText = 'Hide History';
-    output.innerHTML = 'Yes, This is history';
-    // let printHistory = player.fishHistory.forEach((fish) => `<ul>${fish.size} ${fish.provideDescription}, roll required: ${fish.requiredRoll}</ul>`);
-    // output.innerhtml = printHistory;
+    const printHistory = player.fishHistory.map((fish) => `<li>${fish.provideDescription()}, roll required: ${fish.requiredRoll}, xp gained: ${fish.difficulty}</li>`).join('');
+    console.log(printHistory);
+    output.innerHTML = `<ul> ${printHistory} </ul>`;
 
     switchHistory = hideHistory;
 }
