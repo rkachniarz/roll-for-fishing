@@ -23,6 +23,7 @@ export class Fish {
         const pickedSize = pickRandom(sizes);
         this.size = pickedSize.name;
         this.difficulty = (difficultyMod + (sizes.indexOf(pickedSize)));
+        this.xp = (Math.max(this.difficulty, 0))
         this.requiredRoll = (this.difficulty + roll20());
     }
 

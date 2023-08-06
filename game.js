@@ -13,6 +13,7 @@ const playerXPTotalElement = document.querySelector('[data-player="XP Total"]');
 const playButton = document.querySelector('[data-button="Main Button"]');
 const historyButton = document.querySelector('[data-history-button="History Button"]');
 const output = document.querySelector('[data-output]');
+const levelUpPanel = document.querySelector('[data-player="Level Up Panel"]')
 
 // Variables
 const currentLocation = lake;
@@ -37,9 +38,8 @@ function buttonFunction(){
     let catchmessage;
 
     if ((rollTotal >= fish.requiredRoll) || isNat20) {
-        catchmessage = `Congratulations, you've caught it! You've earned ${fish.difficulty}xp`
-        player.totalxp += fish.difficulty;
-        updatePlayer();
+        catchmessage = `Congratulations, you've caught it! You've earned ${fish.xp}xp`
+        updatePlayer(player.gainXP(fish.xp));
         player.fishHistory.push({fish, rollTotal});
         updateFishHistoryButton();
     } else {
@@ -52,9 +52,21 @@ function buttonFunction(){
     ${catchmessage}`;
 };
    
-function updatePlayer(){
+function updatePlayer(hasLeveledUp){
     playerXPTotalElement.innerHTML=player.totalxp;
-    playerLevelElement.innerHTML=player.getLevel();
+    playerLevelElement.innerHTML=player.level;
+    if (hasLeveledUp) levelUpFunction();
+}
+
+function levelUpFunction() {
+    offerLevelUpChoices();
+    levelUpPanel.style["display"] = "block";
+    setTimeout(() => {
+        levelUpPanel.style["display"] = "none";
+      }, 3000);
+}
+
+function offerLevelUpChoices() {
 }
 
 function updateFishHistoryButton(){
@@ -71,12 +83,9 @@ function showHistory(){
     historyButton.innerText = 'Hide History';
     console.log(player.fishHistory)
     const printHistory = player.fishHistory.map(({fish, rollTotal}) => `<li>${fish.provideDescription()}, roll required: ${fish.requiredRoll}, your roll: ${rollTotal}, xp gained: ${fish.difficulty}</li>`).join('');
-    // console.log(printHistory);
     output.innerHTML = `<ul> ${printHistory} </ul>`;
-
     switchHistory = hideHistory;
 }
-
 function hideHistory(){
     historyButton.innerText = 'Show History';
     output.innerHTML ='';
