@@ -3,6 +3,7 @@ import { player } from "./player.js";
 import { getRandomNumber, roll20 } from "./helpers.js";
 import "./locations.js";
 import { lake } from "./locations.js";
+import { increasePlayerFishingSkill, giveRandomSpecialTreasure } from "./levelup.js";
 
 
 // Selectors 
@@ -13,7 +14,9 @@ const playerXPTotalElement = document.querySelector('[data-player="XP Total"]');
 const playButton = document.querySelector('[data-button="Main Button"]');
 const historyButton = document.querySelector('[data-history-button="History Button"]');
 const output = document.querySelector('[data-output]');
-const levelUpPanel = document.querySelector('[data-player="Level Up Panel"]')
+const levelUpPanel = document.querySelector('[data-player="Level Up Panel"]');
+const levelUpButton1 = document.querySelector('[data-button="Level Up Choice 1');
+const levelUpButton2 = document.querySelector('[data-button="Level Up Choice 2');
 
 // Variables
 const currentLocation = lake;
@@ -52,22 +55,40 @@ function buttonFunction(){
     ${catchmessage}`;
 };
    
-function updatePlayer(hasLeveledUp){
-    playerXPTotalElement.innerHTML=player.totalxp;
-    playerLevelElement.innerHTML=player.level;
+function updatePlayer(hasLeveledUp = false){
     if (hasLeveledUp) levelUpFunction();
+    playerXPTotalElement.innerText = player.totalxp;
+    playerLevelElement.innerText = player.level;
+    playerSkillElement.innerText = player.skill;
 }
 
 function levelUpFunction() {
-    offerLevelUpChoices();
     levelUpPanel.style["display"] = "block";
-    setTimeout(() => {
-        levelUpPanel.style["display"] = "none";
-      }, 3000);
 }
 
-function offerLevelUpChoices() {
+function firstLevelUpChoice() {
+    increasePlayerFishingSkill(player);
 }
+
+function secondLevelUpChoice() {
+    giveRandomSpecialTreasure(player);
+}
+
+function closeLevelUpPanel() {
+    updatePlayer();
+    levelUpPanel.style["display"] = "none"; 
+}
+
+function levelUpButton1Handler() {
+    firstLevelUpChoice();
+    closeLevelUpPanel();
+}
+
+function levelUpButton2Handler(callback, argument) {
+    secondLevelUpChoice();
+    closeLevelUpPanel();
+}
+
 
 function updateFishHistoryButton(){
     if (player.fishHistory.length == 0) historyButton.style["display"] = "none";
@@ -88,16 +109,16 @@ function showHistory(){
 }
 function hideHistory(){
     historyButton.innerText = 'Show History';
-    output.innerHTML ='';
+    output.innerHTML = '';
     switchHistory = showHistory;
 }
 // Rendering 
 
 updateFishHistoryButton();
 updatePlayer();
-playerNameElement.innerHTML=player.name;
-playerSkillElement.innerHTML=player.skill;
+playerNameElement.innerHTML = player.name;
 playButton.addEventListener("click", buttonFunction);
 historyButton.addEventListener("click", historyButtonListener);
-
+levelUpButton1.addEventListener("click", levelUpButton1Handler);
+levelUpButton2.addEventListener("click", levelUpButton2Handler);
 
